@@ -1,135 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>My Social Media</title>
+    <title>My Social App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background-color: #f0f2f5;
+        }
 
-<style>
-body {
-    font-family: Arial;
-    background-color: #f0f2f5;
-    text-align: center;
-    transition: 0.3s;
-}
+        .navbar {
+            background-color: #1877f2;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
 
-.container {
-    width: 350px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    margin-top: 50px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px gray;
-    transition: 0.3s;
-}
+        .container {
+            width: 400px;
+            margin: 20px auto;
+        }
 
-input, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
-}
+        .post-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
 
-button {
-    margin-top: 10px;
-    padding: 8px;
-    width: 100%;
-    background-color: #1877f2;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        .post-box textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-.post {
-    background: #f5f6f7;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    text-align: left;
-}
+        .post-box button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: none;
+            background: #1877f2;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-.dark {
-    background-color: #18191a;
-    color: white;
-}
+        .post {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-.dark .container {
-    background-color: #242526;
-}
-
-.dark .post {
-    background-color: #3a3b3c;
-}
-</style>
-
+        .like-btn {
+            margin-top: 10px;
+            background: #e4e6eb;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
 
-<div id="authSection" class="container">
-    <h2>Login / Register</h2>
-
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-
-    <button onclick="register()">Register</button>
-    <button onclick="login()">Login</button>
-
-    <p id="message"></p>
+<div class="navbar">
+    My Social App
 </div>
 
-<div id="mainSection" class="container" style="display:none;">
-    <h2>My Social Media</h2>
+<div class="container">
 
-    <button onclick="logout()">Logout</button>
-    <button onclick="toggleMode()">Dark Mode 🌙</button>
-
-    <textarea id="postInput" placeholder="What's on your mind?"></textarea>
-    <button onclick="addPost()">Post</button>
+    <div class="post-box">
+        <textarea id="postInput" placeholder="What's on your mind?"></textarea>
+        <button onclick="addPost()">Post</button>
+    </div>
 
     <div id="posts"></div>
+
 </div>
 
 <script>
-function register() {
-    var user = username.value;
-    var pass = password.value;
+    function addPost() {
+        var input = document.getElementById("postInput");
+        var postText = input.value;
 
-    if(user && pass) {
-        localStorage.setItem("user", user);
-        localStorage.setItem("pass", pass);
-        message.innerText = "Registered Successfully!";
-    }
-}
+        if(postText === "") {
+            alert("Write something first!");
+            return;
+        }
 
-function login() {
-    if(username.value === localStorage.getItem("user") &&
-       password.value === localStorage.getItem("pass")) {
-
-        authSection.style.display = "none";
-        mainSection.style.display = "block";
-    } else {
-        message.innerText = "Wrong Username or Password!";
-    }
-}
-
-function logout() {
-    authSection.style.display = "block";
-    mainSection.style.display = "none";
-}
-
-function addPost() {
-    if(postInput.value.trim() !== "") {
         var postDiv = document.createElement("div");
         postDiv.className = "post";
-        postDiv.innerText = postInput.value;
-        posts.prepend(postDiv);
-        postInput.value = "";
-    }
-}
+        postDiv.innerHTML = postText + 
+        '<br><button class="like-btn" onclick="likePost(this)">Like ❤️ 0</button>';
 
-function toggleMode() {
-    document.body.classList.toggle("dark");
-}
+        document.getElementById("posts").prepend(postDiv);
+        input.value = "";
+    }
+
+    function likePost(button) {
+        var text = button.innerHTML;
+        var number = parseInt(text.split(" ")[2]);
+        number++;
+        button.innerHTML = "Like ❤️ " + number;
+    }
 </script>
 
 </body>
