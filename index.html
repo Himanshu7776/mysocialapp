@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Social Media</title>
+
+<style>
+body {
+    font-family: Arial;
+    background-color: #f0f2f5;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.container {
+    width: 350px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    margin-top: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px gray;
+    transition: 0.3s;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 8px;
+    width: 100%;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.post {
+    background: #f5f6f7;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.dark {
+    background-color: #18191a;
+    color: white;
+}
+
+.dark .container {
+    background-color: #242526;
+}
+
+.dark .post {
+    background-color: #3a3b3c;
+}
+</style>
+
+</head>
+<body>
+
+<div id="authSection" class="container">
+    <h2>Login / Register</h2>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
+
+    <p id="message"></p>
+</div>
+
+<div id="mainSection" class="container" style="display:none;">
+    <h2>My Social Media</h2>
+
+    <button onclick="logout()">Logout</button>
+    <button onclick="toggleMode()">Dark Mode 🌙</button>
+
+    <textarea id="postInput" placeholder="What's on your mind?"></textarea>
+    <button onclick="addPost()">Post</button>
+
+    <div id="posts"></div>
+</div>
+
+<script>
+function register() {
+    var user = username.value;
+    var pass = password.value;
+
+    if(user && pass) {
+        localStorage.setItem("user", user);
+        localStorage.setItem("pass", pass);
+        message.innerText = "Registered Successfully!";
+    }
+}
+
+function login() {
+    if(username.value === localStorage.getItem("user") &&
+       password.value === localStorage.getItem("pass")) {
+
+        authSection.style.display = "none";
+        mainSection.style.display = "block";
+    } else {
+        message.innerText = "Wrong Username or Password!";
+    }
+}
+
+function logout() {
+    authSection.style.display = "block";
+    mainSection.style.display = "none";
+}
+
+function addPost() {
+    if(postInput.value.trim() !== "") {
+        var postDiv = document.createElement("div");
+        postDiv.className = "post";
+        postDiv.innerText = postInput.value;
+        posts.prepend(postDiv);
+        postInput.value = "";
+    }
+}
+
+function toggleMode() {
+    document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>
